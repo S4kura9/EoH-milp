@@ -1,0 +1,26 @@
+[
+     {
+          "algorithm": "\nNovel algorithm: At each step, compute the product of the distances from the current node to each unvisited node and choose the unvisited node corresponding to the minimum product as the next node.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distances_to_unvisited = distance_matrix[current_node, unvisited_nodes]\n    product_distances = np.prod(distances_to_unvisited, axis=0)\n    next_node_idx = np.argmin(product_distances)\n    next_node = unvisited_nodes[next_node_idx]\n    return next_node",
+          "objective": 6.60788,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nProposed algorithm: The new algorithm selects the next node by prioritizing nodes that are closer to the destination node but have not been visited yet, using a combination of the distance from the current node to unvisited nodes and the distance from each unvisited node to the destination.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    unvisited_distances = distance_matrix[current_node, unvisited_nodes]\n    dest_distances = distance_matrix[unvisited_nodes, destination_node]\n    combined_distances = unvisited_distances + dest_distances\n    next_node = unvisited_nodes[np.argmin(combined_distances)]\n    return next_node",
+          "objective": 7.6436,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nPropose a novel algorithm that selects the next node based on the sum of distances from the current node to each unvisited node and the distance from the destination node to each unvisited node, giving priority to nodes closer to either the current or destination nodes.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    total_distances = np.sum(distance_matrix[current_node][unvisited_nodes]) + distance_matrix[destination_node][unvisited_nodes]\n    next_node = unvisited_nodes[np.argmin(total_distances)]\n    return next_node",
+          "objective": 18.79694,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nPropose a novel algorithm that selects the next node based on the summation of the distances from the current node to each unvisited node, divided by the Euclidean distance from the current node to the destination node, and then selecting the node with the highest resulting value.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    remaining_nodes = np.setdiff1d(unvisited_nodes, current_node)\n    node_distances = distance_matrix[current_node, remaining_nodes]\n    total_distances = np.sum(distance_matrix[current_node, unvisited_nodes])\n    euclidean_distance = np.linalg.norm(distance_matrix[current_node, destination_node])\n    scores = total_distances / euclidean_distance\n    next_node = remaining_nodes[np.argmax(scores)]\n    return next_node",
+          "objective": 25.828,
+          "other_inf": null
+     }
+]

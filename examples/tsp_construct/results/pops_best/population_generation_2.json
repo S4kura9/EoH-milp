@@ -1,0 +1,6 @@
+{
+     "algorithm": "The new algorithm prioritizes nodes based on a combination of their distance from the current node, the remaining distance to the destination node, and a factor representing the potential for improvement in the total distance.",
+     "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distance_from_current = distance_matrix[current_node, unvisited_nodes]\n    remaining_distance_to_destination = distance_matrix[destination_node, unvisited_nodes]\n    potential_for_improvement = remaining_distance_to_destination - distance_from_current\n\n    scores = potential_for_improvement / (distance_from_current + 1e-6)  # Avoid division by zero\n\n    next_node = unvisited_nodes[np.argmax(scores)]\n\n    return next_node",
+     "objective": 6.30341,
+     "other_inf": null
+}

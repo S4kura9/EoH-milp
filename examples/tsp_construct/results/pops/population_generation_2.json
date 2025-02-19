@@ -1,0 +1,26 @@
+[
+     {
+          "algorithm": "The new algorithm prioritizes nodes based on a combination of their distance from the current node, the remaining distance to the destination node, and a factor representing the potential for improvement in the total distance.",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distance_from_current = distance_matrix[current_node, unvisited_nodes]\n    remaining_distance_to_destination = distance_matrix[destination_node, unvisited_nodes]\n    potential_for_improvement = remaining_distance_to_destination - distance_from_current\n\n    scores = potential_for_improvement / (distance_from_current + 1e-6)  # Avoid division by zero\n\n    next_node = unvisited_nodes[np.argmax(scores)]\n\n    return next_node",
+          "objective": 6.30341,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nProposed algorithm: In each step, select the next node based on the highest average distance to the current node among the unvisited nodes weighted by the distance matrix.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    avg_distances = np.mean(distance_matrix[current_node][unvisited_nodes], axis=0)\n    next_node = unvisited_nodes[np.argmax(avg_distances)]\n    return next_node",
+          "objective": 6.60788,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nMy novel algorithm involves selecting the next node based on the smallest Euclidean distance to the destination node among unvisited nodes, ensuring a diverse exploration of the environment in each step.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    remaining_nodes = np.setdiff1d(unvisited_nodes, [current_node])\n    distances_to_dest = [np.linalg.norm(distance_matrix[current_node] - distance_matrix[node]) for node in remaining_nodes]\n    next_node = remaining_nodes[np.argmin(distances_to_dest)]\n    \n    return next_node",
+          "objective": 6.73716,
+          "other_inf": null
+     },
+     {
+          "algorithm": "Explore nodes based on a balance between attractiveness, which is influenced by distance and visit count, and novelty, which encourages selecting less visited nodes, to determine the next node while adding a factor of proximity, where closer nodes are favored over farther ones.",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    attractiveness_factor = 0.7  # Increased weight parameter for attractiveness\n    exploration_probability = 0.1  # Decreased exploration probability\n\n    distances = distance_matrix[current_node, unvisited_nodes]\n    visit_counts = np.zeros_like(unvisited_nodes)\n\n    for i, node in enumerate(unvisited_nodes):\n        visit_counts[i] = len(np.where(unvisited_nodes == node)[0])\n\n    proximity = 1 / distances  # Factor of proximity based on distance\n\n    attractiveness = proximity * np.reciprocal(1 + visit_counts) ** attractiveness_factor\n\n    if np.random.rand() < exploration_probability:\n        next_node = np.random.choice(unvisited_nodes)\n    else:\n        attractiveness_argmax = np.argmax(attractiveness)\n        next_node = unvisited_nodes[attractiveness_argmax]\n\n    return next_node",
+          "objective": 8.19892,
+          "other_inf": null
+     }
+]
