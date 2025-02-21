@@ -1,26 +1,26 @@
 [
      {
-          "algorithm": "\nNovel algorithm: At each step, compute the product of the distances from the current node to each unvisited node and choose the unvisited node corresponding to the minimum product as the next node.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distances_to_unvisited = distance_matrix[current_node, unvisited_nodes]\n    product_distances = np.prod(distances_to_unvisited, axis=0)\n    next_node_idx = np.argmin(product_distances)\n    next_node = unvisited_nodes[next_node_idx]\n    return next_node",
+          "algorithm": "\nProposed algorithm: Iterate through unvisited_nodes and select the node that minimizes the product of the current node's distance to it and the reciprocal of its distance to the destination node.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_score = float('inf')\n    next_node = None\n    \n    for node in unvisited_nodes:\n        current_distance = distance_matrix[current_node][node]\n        dest_distance = distance_matrix[destination_node][node]\n        score = current_distance * 1 / dest_distance\n        \n        if score < min_score:\n            min_score = score\n            next_node = node\n    \n    return next_node",
+          "objective": 6.30341,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nDesign a novel algorithm that selects the next node based on a combination of the shortest distance to unvisited nodes and the number of remaining unvisited nodes each unvisited node is connected to, prioritizing nodes that are closer and connect to more unvisited nodes first.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_distance = float('inf')\n    next_node = None\n\n    for node in unvisited_nodes:\n        if distance_matrix[current_node][node] < min_distance:\n            min_distance = distance_matrix[current_node][node]\n            next_node = node\n\n    return next_node",
           "objective": 6.60788,
           "other_inf": null
      },
      {
-          "algorithm": "\nProposed algorithm: The new algorithm selects the next node by prioritizing nodes that are closer to the destination node but have not been visited yet, using a combination of the distance from the current node to unvisited nodes and the distance from each unvisited node to the destination.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    unvisited_distances = distance_matrix[current_node, unvisited_nodes]\n    dest_distances = distance_matrix[unvisited_nodes, destination_node]\n    combined_distances = unvisited_distances + dest_distances\n    next_node = unvisited_nodes[np.argmin(combined_distances)]\n    return next_node",
+          "algorithm": "\nNew Algorithm: The algorithm selects the next node based on the product of the distance between the current node and unvisited nodes and the distance between each unvisited node and the destination node, choosing the node with the minimum resulting product.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_product = np.inf\n    next_node = None\n    \n    for node in unvisited_nodes:\n        product = distance_matrix[current_node][node] * distance_matrix[node][destination_node]\n        if product < min_product:\n            min_product = product\n            next_node = node\n    \n    return next_node",
+          "objective": 7.31099,
+          "other_inf": null
+     },
+     {
+          "algorithm": "\nProposed algorithm: An adaptive greedy approach that selects the next node based on the minimum distance to the current node while also considering the overall distance to the destination node.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_dist = np.inf\n    next_node = None\n    for node in unvisited_nodes:\n        dist_to_current = distance_matrix[current_node][node]\n        dist_to_dest = distance_matrix[node][destination_node]\n        total_dist = dist_to_current + dist_to_dest\n        if total_dist < min_dist:\n            min_dist = total_dist\n            next_node = node\n    return next_node",
           "objective": 7.6436,
-          "other_inf": null
-     },
-     {
-          "algorithm": "\nPropose a novel algorithm that selects the next node based on the sum of distances from the current node to each unvisited node and the distance from the destination node to each unvisited node, giving priority to nodes closer to either the current or destination nodes.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    total_distances = np.sum(distance_matrix[current_node][unvisited_nodes]) + distance_matrix[destination_node][unvisited_nodes]\n    next_node = unvisited_nodes[np.argmin(total_distances)]\n    return next_node",
-          "objective": 18.79694,
-          "other_inf": null
-     },
-     {
-          "algorithm": "\nPropose a novel algorithm that selects the next node based on the summation of the distances from the current node to each unvisited node, divided by the Euclidean distance from the current node to the destination node, and then selecting the node with the highest resulting value.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    remaining_nodes = np.setdiff1d(unvisited_nodes, current_node)\n    node_distances = distance_matrix[current_node, remaining_nodes]\n    total_distances = np.sum(distance_matrix[current_node, unvisited_nodes])\n    euclidean_distance = np.linalg.norm(distance_matrix[current_node, destination_node])\n    scores = total_distances / euclidean_distance\n    next_node = remaining_nodes[np.argmax(scores)]\n    return next_node",
-          "objective": 25.828,
           "other_inf": null
      }
 ]

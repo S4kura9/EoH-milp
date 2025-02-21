@@ -1,6 +1,6 @@
 {
-     "algorithm": "\nNovel algorithm: At each step, compute the product of the distances from the current node to each unvisited node and choose the unvisited node corresponding to the minimum product as the next node.\n",
-     "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distances_to_unvisited = distance_matrix[current_node, unvisited_nodes]\n    product_distances = np.prod(distances_to_unvisited, axis=0)\n    next_node_idx = np.argmin(product_distances)\n    next_node = unvisited_nodes[next_node_idx]\n    return next_node",
-     "objective": 6.60788,
+     "algorithm": "\nProposed algorithm: Iterate through unvisited_nodes and select the node that minimizes the product of the current node's distance to it and the reciprocal of its distance to the destination node.\n",
+     "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_score = float('inf')\n    next_node = None\n    \n    for node in unvisited_nodes:\n        current_distance = distance_matrix[current_node][node]\n        dest_distance = distance_matrix[destination_node][node]\n        score = current_distance * 1 / dest_distance\n        \n        if score < min_score:\n            min_score = score\n            next_node = node\n    \n    return next_node",
+     "objective": 6.30341,
      "other_inf": null
 }
