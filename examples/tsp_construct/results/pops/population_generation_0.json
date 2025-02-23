@@ -1,26 +1,26 @@
 [
      {
-          "algorithm": "\nProposed algorithm: Iterate through unvisited_nodes and select the node that minimizes the product of the current node's distance to it and the reciprocal of its distance to the destination node.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_score = float('inf')\n    next_node = None\n    \n    for node in unvisited_nodes:\n        current_distance = distance_matrix[current_node][node]\n        dest_distance = distance_matrix[destination_node][node]\n        score = current_distance * 1 / dest_distance\n        \n        if score < min_score:\n            min_score = score\n            next_node = node\n    \n    return next_node",
-          "objective": 6.30341,
+          "algorithm": "\nPropose an algorithm that selects the next node based on a combination of the nearest unvisited node in terms of Euclidean distance and the node with the maximum number of connections to unvisited nodes, aiming to balance between short-term and long-term optimization; \n1. Calculate the Euclidean distance from the current node to each unvisited node.\n2. Determine the nearest unvisited node `nearest_node`.\n3. Calculate the total connections from each unvisited node to other unvisited nodes.\n4. Determine the unvisited node with the maximum connections, breaking ties by choosing the closest to the current node as the next node `next_node`.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    distances = np.sqrt(np.sum((distance_matrix[unvisited_nodes] - distance_matrix[current_node])**2, axis=1))\n    nearest_node = unvisited_nodes[np.argmin(distances)]\n    \n    connections = np.sum(distance_matrix[unvisited_nodes][:, unvisited_nodes] > 0, axis=1)\n    max_connections_node = unvisited_nodes[np.argmax(connections)]\n    \n    if nearest_node == max_connections_node:\n        next_node = nearest_node\n    else:\n        next_node = min(nearest_node, max_connections_node)\n    \n    return next_node",
+          "objective": 6.59703,
           "other_inf": null
      },
      {
-          "algorithm": "\nDesign a novel algorithm that selects the next node based on a combination of the shortest distance to unvisited nodes and the number of remaining unvisited nodes each unvisited node is connected to, prioritizing nodes that are closer and connect to more unvisited nodes first.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_distance = float('inf')\n    next_node = None\n\n    for node in unvisited_nodes:\n        if distance_matrix[current_node][node] < min_distance:\n            min_distance = distance_matrix[current_node][node]\n            next_node = node\n\n    return next_node",
-          "objective": 6.60788,
+          "algorithm": "\nA novel algorithm to select the next node involves calculating the sum of distances from the current node to each unvisited node and then choosing the node with the shortest sum as the next node.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    shortest_sum = float('inf')\n    next_node = None\n    \n    for node in unvisited_nodes:\n        if node == destination_node:  # Skip the destination node\n            continue\n        \n        sum_distance = np.sum(distance_matrix[current_node] + distance_matrix[node])\n        \n        if sum_distance < shortest_sum:\n            shortest_sum = sum_distance\n            next_node = node\n    \n    return next_node",
+          "objective": 23.13167,
           "other_inf": null
      },
      {
-          "algorithm": "\nNew Algorithm: The algorithm selects the next node based on the product of the distance between the current node and unvisited nodes and the distance between each unvisited node and the destination node, choosing the node with the minimum resulting product.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_product = np.inf\n    next_node = None\n    \n    for node in unvisited_nodes:\n        product = distance_matrix[current_node][node] * distance_matrix[node][destination_node]\n        if product < min_product:\n            min_product = product\n            next_node = node\n    \n    return next_node",
-          "objective": 7.31099,
+          "algorithm": "\nThe novel algorithm selects the next node based on the maximum difference between the current node's distance to the destination node and the average distance to unvisited nodes, aiming to maintain a balance between moving closer to the destination and exploring other nodes.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    max_diff = -np.inf\n    next_node = None\n\n    for node in unvisited_nodes:\n        current_to_destination = distance_matrix[current_node][destination_node]\n        current_to_node = distance_matrix[current_node][node]\n        other_nodes_avg_dist = np.mean([distance_matrix[node][other] for other in unvisited_nodes if other != node])\n\n        diff = current_to_destination - other_nodes_avg_dist\n        if diff > max_diff:\n            max_diff = diff\n            next_node = node\n\n    return next_node",
+          "objective": 29.93789,
           "other_inf": null
      },
      {
-          "algorithm": "\nProposed algorithm: An adaptive greedy approach that selects the next node based on the minimum distance to the current node while also considering the overall distance to the destination node.\n",
-          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    min_dist = np.inf\n    next_node = None\n    for node in unvisited_nodes:\n        dist_to_current = distance_matrix[current_node][node]\n        dist_to_dest = distance_matrix[node][destination_node]\n        total_dist = dist_to_current + dist_to_dest\n        if total_dist < min_dist:\n            min_dist = total_dist\n            next_node = node\n    return next_node",
-          "objective": 7.6436,
+          "algorithm": "\nThis algorithm selects the next node by finding the unvisited node that is the farthest away from the current node and has the shortest distance to the destination node.\n",
+          "code": "import numpy as np\n\ndef select_next_node(current_node, destination_node, unvisited_nodes, distance_matrix):\n    max_distance = 0\n    next_node = None\n\n    for node in unvisited_nodes:\n        if distance_matrix[current_node][node] > max_distance:\n            max_distance = distance_matrix[current_node][node]\n            next_node = node\n        elif distance_matrix[current_node][node] == max_distance:\n            if distance_matrix[node][destination_node] < distance_matrix[next_node][destination_node]:\n                next_node = node\n\n    return next_node",
+          "objective": 34.694,
           "other_inf": null
      }
 ]

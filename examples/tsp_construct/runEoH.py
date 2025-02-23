@@ -4,7 +4,7 @@ from eoh.src.eoh import eoh
 from eoh.src.eoh.utils.getParas import Paras
 
 # Parameter initilization #
-paras = Paras() 
+paras = Paras() #init
 
 # Set parameters #
 paras.set_paras(method = "eoh",    # ['ael','eoh']
